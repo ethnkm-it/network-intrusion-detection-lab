@@ -59,3 +59,52 @@ Suricata monitored network traffic and generated IDS events, while Filebeat forw
 Zeek (formerly Bro) provided additional network analysis capabilities, including packet capture analysis and file extraction.
 
 ![Security Monitoring Pipeline](diagrams/security-monitoring-pipeline.png)
+
+---
+
+## Implementation
+
+### 1. Network Intrusion Detection with Suricata
+
+Suricata was deployed on the Ubuntu security monitoring server to inspect network traffic and generate IDS events.
+
+The configuration enabled monitoring for protocols including HTTP, SSH, TLS, and SMTP. Suricata generated structured event data through `eve.json`, providing information about network flows, alerts, source and destination addresses, ports, and protocol activity.
+
+![Suricata EVE JSON](screenshots/suricata-eve-json.png)
+
+### 2. Centralized Logging with the ELK Stack
+
+Suricata logs were forwarded through Filebeat to Logstash, where the JSON events were processed before being stored in Elasticsearch.
+
+The logging pipeline followed this flow:
+
+`Suricata → Filebeat → Logstash → Elasticsearch → Kibana`
+
+Kibana provided a centralized interface for searching and visualizing network security events.
+
+![Kibana Dashboard](screenshots/kibana-dashboard.png)
+
+### 3. Security Alert Analysis
+
+Kibana was configured to filter Suricata events and isolate IDS alerts for investigation.
+
+Security events could be reviewed using fields such as:
+
+- Source and destination IP addresses
+- Source and destination ports
+- Event type
+- Alert category
+- Alert signature
+- Protocol information
+
+![Kibana Alert Detail](screenshots/kibana-alert-detail.png)
+
+### 4. Network Analysis and File Extraction with Zeek
+
+Zeek (formerly Bro) was deployed as an additional network analysis platform.
+
+Network traffic was captured using `tcpdump` and saved as PCAP data for offline analysis. Zeek processed the captured traffic and generated connection and protocol logs.
+
+File extraction was also tested by transferring a file through the monitored network, capturing the traffic, and extracting the transferred file from the PCAP.
+
+![Zeek File Extraction](screenshots/zeek-file-extraction.png)
