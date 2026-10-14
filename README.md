@@ -47,3 +47,15 @@ Zeek (formerly Bro IDS).
 | Ubuntu Linux | Security monitoring server |
 | VMware vSphere | Virtual infrastructure |
 | tcpdump | Packet capture |
+
+---
+
+## Architecture
+
+The security monitoring environment was designed to capture network traffic from the Living Lab network and centralize security events for analysis.
+
+Suricata monitored network traffic and generated IDS events, while Filebeat forwarded the logs to Logstash for processing. The processed events were stored in Elasticsearch and visualized through Kibana.
+
+Zeek (formerly Bro) provided additional network analysis capabilities, including packet capture analysis and file extraction.
+
+![Security Monitoring Pipeline](diagrams/security-monitoring-pipeline.png)
